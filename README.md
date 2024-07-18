@@ -1,7 +1,7 @@
 # CS50 Final Project
 Intuitive and ergonomic network snooping.
 
-### Checklist
+## Checklist
 
  - [ ] **IP Scraper**
         *Return IP address given domain*
@@ -30,9 +30,60 @@ Intuitive and ergonomic network snooping.
 	- [ ] Display important information concisely and aesthetically
 	- [ ] Color code output
 
-## Comments & Notes
+## Flow Chart
+```mermaid
+flowchart TD
 
-- We could store the ascii art and other ui in files in an assets directory to demonstrate usage of criteria #2 (Files, directories, and permissions)
-- We could store previous target hosts and found vunerabilities or data in a SQL server to satisfy usage of criteria #9 (SQL Integration)
+    run[run.sh] --> |Set Variables| config(config/config.sh) -.-> init.sql & welcome
+    run --> |Create Database| init.sql(init.sql)
+    init.sql --> database[(Database)] 
+
+    subgraph Assets
+        shovel[/shovel.txt/]
+        title[/title.txt/]
+    end
+
+    run --> welcome[welcome.sh]
+        welcome --> select{Select tool}
+
+        select --> IpScrapper
+        select --> PortMapper
+        select --> ServiceFingerprinter
+
+        database --> IpScrapper.in
+        database --> PortMapper.in1 & PortMapper.in2
+        database --> ServiceFingerprinter.in1 & ServiceFingerprinter.in2
 
 
+
+         subgraph IpScrapper
+                    IpScrapper.in[/Domain/] --> IpScrapper.proccess(dig +short)
+                    IpScrapper.proccess --> IpScrapper.out[/Ip Address/]
+         end
+
+         subgraph PortMapper
+                    PortMapper.in1[/IP Address/] & PortMapper.in2[/Ports/] --> PortMapper.proccess(nc -zv -w 2)
+                    PortMapper.proccess --> PortMapper.out[/Open Ports/]
+         end
+
+         subgraph ServiceFingerprinter
+                    ServiceFingerprinter.in1[/IP Address/] & ServiceFingerprinter.in2[/Open Ports/] --> ServiceFingerprinter.proccess1(Get Banners)
+                    ServiceFingerprinter.proccess1 --> ServiceFingerprinter.proccess2[Parse Banners]
+                    ServiceFingerprinter.proccess2 --> ServiceFingerprinter.out[/Services/]
+         end
+            
+            IpScrapper ~~~ PortMapper ~~~ ServiceFingerprinter
+                    
+            stdout(((output)))
+            IpScrapper.out --> stdout
+            PortMapper.out --> stdout
+            ServiceFingerprinter.out --> stdout
+
+            database2[(Database)]
+            IpScrapper.out --> database2
+            PortMapper.out --> database2
+            ServiceFingerprinter.out --> database2
+
+            stdout --> redo{Use another tool?}
+            redo --> endchart(End) & restart(Goto select tool)
+```
