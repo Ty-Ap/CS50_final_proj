@@ -1,16 +1,16 @@
 # CS50 Final Project
 Intuitive and ergonomic network snooping.
 
-## Checklist
+### Checklist
 
- - [ ] **IP Scraper**
+ - [x] **IP Scraper**
         *Return IP address given domain*
 	- [x] Use `dig` to get IP address
 	- [ ] Run network IP sweep
  - [ ] **Port mapper**
 		 *Return open ports of a given ip*
 	- [x] Use `nc` to scan ports
-	- [ ] Remove clutter ( closed ports and useless information)
+	- [x] Remove clutter ( closed ports and useless information)
 	- [ ] Display important information concisely and aesthetically
 	- [ ] Suggest further actions based on results (redirect to *service fingerprinting* tool?)
 	- [ ] Color code output
