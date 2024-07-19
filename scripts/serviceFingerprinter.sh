@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#Usage statement for users
-if [ -z "$1" ]; then
-	echo "Usage $0 <ip_address>"
-	exit 1
-fi
 ip_address=$1
-banner=$(curl -s -i "$ip_address")
-echo "$banner" | grep -i -E "Server|Last-Modified|ETag|Content-Type|X-|Date"
+port=$2
+user_agent="Mozilla/5.0 (compatible; Fingerprinter/1.0)"
+request="HEAD / HTTP/1.1\r\nHost: $ip_address\r\nUser-Agent: $user_agent\r\nConnection: close\r\n\r\n"
+banner=$(printf "$request" | nc -v -n -w 1 $ip_address $port 2>&1 )
+
+echo "Port: $port"
+echo "$banner" | grep -E "HTTP/|Server:|Content-Type:|Date:|Connection:|Content-Length:"
