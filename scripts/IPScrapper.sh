@@ -21,3 +21,7 @@ else
 	echo $ip_address
 	print_line
 fi
+
+if yes_or_no "Would you like to map this IP's ports?"; then
+	scripts/portScanner.sh $ip_address
+fi

@@ -7,14 +7,18 @@ if [ -z "$1" ]; then
 fi
 
 ports=$SCAN_PORTS
+ip_address=$1
 
 #Map ports
 for port in $ports; 
-  do nc -zv -w 2 $1 $port
+  do nc -zv -w 2 $ip_address $port
     if [ $? -eq 0 ]; then
       echo "port $port is open"
     else 
       echo "port $port is closed or filtered"
     fi
 done
-echo "Thank you for using Dig It ^_^"
+
+if yes_or_no "Would you like to get a service fingerprint of open ports?"; then
+	scripts/serviceFingerprinter.sh $ip_address
+fi

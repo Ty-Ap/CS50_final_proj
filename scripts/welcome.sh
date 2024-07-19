@@ -15,7 +15,6 @@ select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Exit"; do
 			tool=scripts/portScanner.sh
 			;;
 		"Service Fingerprinter")
-			echo "serviceFingerprinter.sh is currently empty"
 			tool=scripts/serviceFingerprinter.sh
 			;;
 		Exit)
