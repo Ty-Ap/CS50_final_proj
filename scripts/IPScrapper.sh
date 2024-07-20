@@ -18,10 +18,10 @@ else
 	echo "IP adress for $1 follows"
 	print_line
 	cat assets/shovel.txt
-	echo $ip_address
+	echo "$ip_address"
 	print_line
 fi
 
 if yes_or_no "Would you like to map this IP's ports?"; then
-	scripts/portScanner.sh $ip_address
+	scripts/portScanner.sh "$ip_address"
 fi
