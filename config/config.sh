@@ -10,7 +10,7 @@ print_line() {
 	printf '%*s\n' "$width" '' | tr ' ' '='
 }
 yes_or_no() {
-        read -p "$* [Y/n]: " yn
+        read -r -p "$* [Y/n]: " yn
         case $yn in
             [Yy]* | "") return 0  ;;  
             [Nn]* | *) echo "Aborted" ; return  1 ;;
