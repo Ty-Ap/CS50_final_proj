@@ -23,10 +23,15 @@ Intuitive and ergonomic network snooping.
 	 
 	- [ ] **Manual method**
 	 *Manually try certain methods of fingerprinting*
-	
         - [ ] Get open ports (use `Port Mapper` tool)
         - [ ] Get banners with ncat `nc`
         - [ ] Parse banners for important data
+								- [ ] Fingerprint attempt for all protocols
+																	- [x] http
+																	- [ ] https
+																	- [ ] tcp
+																	- [ ] smtp
+																	- etc
 	- [ ] Display important information concisely and aesthetically
 	- [ ] Color code output
 

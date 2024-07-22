@@ -8,17 +8,18 @@ fi
 
 ports=$SCAN_PORTS
 ip_address=$1
-
+open_ports=()
 #Map ports
-for port in $ports; 
-  do nc -zv -w 2 $ip_address $port
-    if [ $? -eq 0 ]; then
+for port in $ports; do
+  if nc -z -w 1 "$ip_address" "$port" &> /dev/null; then
       echo "port $port is open"
-    else 
-      echo "port $port is closed or filtered"
+      open_ports+=("$port")
     fi
 done
 
 if yes_or_no "Would you like to get a service fingerprint of open ports?"; then
-	scripts/serviceFingerprinter.sh $ip_address
+  for oport in "${open_ports[@]}"; 
+    do echo "fingerprinting port $oport"
+    scripts/serviceFingerprinter.sh "$ip_address" "$oport"
+  done
 fi
