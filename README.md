@@ -91,4 +91,19 @@ flowchart TD
 
             stdout --> redo{Use another tool?}
             redo --> endchart(End) & restart(Goto select tool)
+
+            subgraph extools[External Tools]
+                msfconsole
+                exploitdb
+                whatweb
+            end
+            subgraph routing[Brute Force Routing]
+                routing.in1[/Domain/]
+                routing.in2[/wordlist.txt/]
+                routing.proccess(Get request for every domain/word in wordlist)
+                routing.in1 & routing.in2 --> routing.proccess
+                routing.proccess --> routing.out[/"Results"/]
+            end
+            routing.out --> database2
+            stdout --> extools & routing
 ```

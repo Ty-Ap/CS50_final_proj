@@ -1,5 +1,11 @@
 #!/bin/bash
 
+#Usage statement
+if [ -z "$1" ]; then
+	echo "usage $0 <ip_address> <port>"
+	exit 1
+fi
+
 ip_address=$1
 port=$2
 user_agent="Mozilla/5.0 (compatible; Fingerprinter/1.0)"

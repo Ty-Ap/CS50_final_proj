@@ -1,5 +1,12 @@
 #!/bin/bash
 
+#Config check
+if [ "$config" != "true" ]; then
+	echo "Command executed standalone: Running config"
+	export scriptPath="../"
+	source ../config/config.sh
+fi
+
 #Usage statement for users
 if [ -z "$1" ]; then
 	echo "Usage $0 <domain_name>"
