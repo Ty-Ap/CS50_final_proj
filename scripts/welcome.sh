@@ -29,21 +29,24 @@ select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Exit"; do
 	
 
 	if [ -f $tool ]; then
-		# Determine usage of tool
+
+		#Determine usage of tool
 		usage=$($tool)
-		args=$(echo "$usage" | awk -F'[<>]' '{for(i=2;i<=NF;i+=2) print $i}')
-		# Prompt user for information based on that usage
+		args=$(echo "$usage" | awk -F'[<>]' '{for(i=2;i<=NF;i+=2) print $i}' | tr '\n' ' ')
+		
+		#Prompt user for information based on that usage
 		inputs=()
-		for arg in "${args[@]}"; do
+		for arg in $args; do
 			read -r -p "$arg: " input
 			inputs+=("$input")
 		done
 
 		#Run tool
 		$tool "${inputs[@]}"
-	elif [ "$tool" != "null" ]; then
-		echo "Error: Cannot find tool at $tool."
+		elif [ "$tool" != "null" ]; then
+			echo "Error: Cannot find tool at $tool."
 	fi
+		
 	read -r -p "Press ENTER to continue"
 	break
 done
