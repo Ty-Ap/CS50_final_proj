@@ -1,0 +1,19 @@
+{
+  "name": "cs50_final_proj",
+  "version": "1.0.0",
+  "description": "Intuitive and ergonomic network snooping.",
+  "type": "module",
+  
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cheerio": "^0.22.35",
+    "@types/node": "^22.0.0",
+    "axios": "^1.7.2",
+    "cheerio": "^1.0.0-rc.12"
+  }
+}
