@@ -46,6 +46,6 @@ export -f yes_or_no
 
 
 #Has config run?
-export config=true
+export CONFIG=1
 
 

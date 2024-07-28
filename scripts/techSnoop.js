@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
-
+// Created by Ty
 
 async function scanDomain(url) {
   try {
@@ -23,7 +23,7 @@ async function scanDomain(url) {
       detectedWordpress = true;
     }
 
-    if (jqueryRegex.test(html)) {
+    else if (jqueryRegex.test(html)) {
       console.log(`${url} is using jQuery.`);
       detectedJquery = true;
     }

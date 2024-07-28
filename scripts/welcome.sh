@@ -9,7 +9,7 @@ cat assets/title.txt
 echo "𝙸𝚗𝚝𝚞𝚒𝚝𝚒𝚟𝚎 𝚊𝚗𝚍 𝚎𝚛𝚐𝚘𝚗𝚘𝚖𝚒𝚌 𝚗𝚎𝚝𝚠𝚘𝚛𝚔 𝚜𝚗𝚘𝚘𝚙𝚒𝚗g"
 print_line
 echo "Select a tool to start"
-select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Build Snooper" "Exit"; do
+select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Build Snooper" "Search Targets" "Exit"; do
 	case $option in
 		"IP Scrapper")
 			tool=scripts/IPScrapper.sh
@@ -23,6 +23,9 @@ select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Build Snoo
 		"Build Snooper")
 			tool=scripts/techSnoop.sh
 			;;
+		"Search Targets")
+			tool=scripts/searchTargets.pl
+			;;
 		Exit)
 			echo "Thank you for using DigIt ^_^"
 			exit 0
@@ -35,7 +38,7 @@ select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Build Snoo
 	
 
 	if [ -f $tool ]; then
-
+		
 		#Determine usage of tool
 		usage=$($tool)
 		args=$(echo "$usage" | awk -F'[<>]' '{for(i=2;i<=NF;i+=2) print $i}' | tr '\n' ' ')
