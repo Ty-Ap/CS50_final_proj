@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# initialized by TY , modularized and refactored by D
+
 #Config check
 if [ "$config" != "true" ]; then
 	echo "Command executed standalone: Running config"

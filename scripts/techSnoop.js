@@ -1,6 +1,8 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 
+
+
 async function scanDomain(url) {
   try {
     const response = await axios.get(url)
@@ -11,7 +13,7 @@ async function scanDomain(url) {
     const html = $.html();
 
     const wordpressRegex = /<meta[^>]*name=["']generator["'][^>]*content=["'][^>]*WordPress[^>]*["'][^>]*>/i;
-    const jqueryRegex =  /<a[^>]*href=["']https:\/\/api\.jquery\.com\/["'][^>]*>.*<\/a>/i
+    const jqueryRegex =  /<a[^>]*href=["']https:\/\/api\.jquery\.com\/["'][^>]*>.*<\/a>/i;
 
     let detectedWordpress = false;
     let detectedJquery = false;
@@ -24,6 +26,10 @@ async function scanDomain(url) {
     if (jqueryRegex.test(html)) {
       console.log(`${url} is using jQuery.`);
       detectedJquery = true;
+    }
+
+    else {
+      console.log("remainder of techstack uncertain");
     }
     // Additional checks can be added here
 
@@ -42,3 +48,4 @@ async function scanDomain(url) {
   const url = targetUrl.startsWith('http') ? targetUrl : `https://${targetUrl}`;
   await scanDomain(url);
 })();
+//ty
