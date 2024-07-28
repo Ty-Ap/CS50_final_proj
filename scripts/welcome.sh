@@ -6,7 +6,7 @@ cat assets/title.txt
 echo "𝙸𝚗𝚝𝚞𝚒𝚝𝚒𝚟𝚎 𝚊𝚗𝚍 𝚎𝚛𝚐𝚘𝚗𝚘𝚖𝚒𝚌 𝚗𝚎𝚝𝚠𝚘𝚛𝚔 𝚜𝚗𝚘𝚘𝚙𝚒𝚗g"
 print_line
 echo "Select a tool to start"
-select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Exit"; do
+select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Build Snooper" "Exit"; do
 	case $option in
 		"IP Scrapper")
 			tool=scripts/IPScrapper.sh
@@ -16,6 +16,9 @@ select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Exit"; do
 			;;
 		"Service Fingerprinter")
 			tool=scripts/serviceFingerprinter.sh
+			;;
+		"Build Snooper")
+			tool=scripts/techSnoop.sh
 			;;
 		Exit)
 			echo "Thank you for using DigIt ^_^"
