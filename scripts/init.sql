@@ -1,8 +1,11 @@
 CREATE TABLE IF NOT EXISTS
 targets (
-	id INTEGER PRIMARY KEY,
-	target VARCHAR,
-	ports VARCHAR,
-	services VARCHAR,
-	scanned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	ip VARCHAR,
+	domain VARCHAR
+);
+CREATE TABLE IF NOT EXISTS
+ports (
+	ip VARCHAR,
+	port INTEGER,
+	service VARCHAR
 );

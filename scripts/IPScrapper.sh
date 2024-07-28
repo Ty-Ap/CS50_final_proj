@@ -2,35 +2,40 @@
 
 # initialized by TY , modularized and refactored by D
 
-#Config check
-if [ "$config" != "true" ]; then
-	echo "Command executed standalone: Running config"
-	export scriptPath="../"
-	source ../config/config.sh
-fi
-
-#Usage statement for users
+# Usage statement
 if [ -z "$1" ]; then
 	echo "Usage $0 <domain_name>"
 	exit 1
 fi
 
-#IP retrieval
-ip_address=$(dig +short "$1")
+# Config check
+if [ -z $CONFIG ]; then
+	echo "Command executed standalone: Running config"
+	export scriptPath=$(dirname $0)
+	source $scriptPath/../config/config.sh
+fi
 
-#My computer's DNS returns 143.244.220.150 if the domain cannot be found for some reason so I have to check for that as well - Dawson Hamera
+# Var definitions
+domain=$1
+ip_address=$(dig +short "$domain")
 
+# Program
 if [ -z "$ip_address" ] || [ "$ip_address" == "143.244.220.150" ]; then
-	echo "unable to resolve $1 ip"
+	echo "unable to resolve $domain ip"
+	exit 1
 else
 	clear
-	echo "IP adress for $1 follows"
+	echo "IP address for $domain follows"
 	print_line
-	cat assets/shovel.txt
+	cat $scriptPath/../assets/shovel.txt
 	echo "$ip_address"
 	print_line
 fi
 
+# Save data to db
+$scriptPath/queries.py put ip $ip_address $domain
+
+# Links to external tools & scripts
 if yes_or_no "Would you like to map this IP's ports?"; then
-	scripts/portScanner.sh "$ip_address"
+	$scriptPath/portScanner.sh "$ip_address"
 fi
