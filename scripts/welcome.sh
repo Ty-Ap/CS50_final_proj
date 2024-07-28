@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# basically entirely D (thanks again for containing my chaos)
+
 PS3="Select Option: "
 while : ;do
 clear

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# initialized by TY , modularized and refactored by D
+
 #Usage statement
 if [ -z "$1" ]; then
   echo "usage $0 <ip_address>"
