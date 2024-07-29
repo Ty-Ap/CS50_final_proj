@@ -5,7 +5,7 @@
 PS3="Select Option: "
 while : ;do
 clear
-cat assets/title.txt
+display_asset title.txt
 echo "𝙸𝚗𝚝𝚞𝚒𝚝𝚒𝚟𝚎 𝚊𝚗𝚍 𝚎𝚛𝚐𝚘𝚗𝚘𝚖𝚒𝚌 𝚗𝚎𝚝𝚠𝚘𝚛𝚔 𝚜𝚗𝚘𝚘𝚙𝚒𝚗g"
 print_line
 echo "Select a tool to start"
@@ -56,7 +56,7 @@ select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Build Snoo
 			echo "Error: Cannot find tool at $tool."
 	fi
 		
-	read -r -p "Press ENTER to continue"
+	read -r -p "Press [1;31mENTER[m to continue"
 	break
 done
 done

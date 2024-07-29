@@ -39,9 +39,13 @@ yes_or_no() {
             [Nn]* | *) echo "Aborted" ; return  1 ;;
         esac
 }
+display_asset() {
+	cat  $scriptPath/../assets/$1
+}
 
 export -f print_line
 export -f yes_or_no
+export -f display_asset
 
 
 

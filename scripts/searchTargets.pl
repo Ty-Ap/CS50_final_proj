@@ -31,7 +31,7 @@ my $search_term = $ARGV[0];
 my $all_data = `$scriptPath/queries.py get all`;
 
 if ($search_term eq "") {
-	print "$all_data\n";
+	printf "$all_data\n";
 }
 else {
 
@@ -40,11 +40,11 @@ else {
 	foreach my $target (@targets) {
 		if ($target =~ /$search_term/)
 		{
-			print "$target\n";
+			printf "$target\n";
 			$is_blank = 1;
 		}
 	}
 	if ($is_blank == 0) {
-		print "No targets matched $search_term\n"
+		printf "\033[0;31mNo targets matched\033[0;37m '$search_term'\n"
 	}
 }
