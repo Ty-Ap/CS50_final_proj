@@ -1,11 +1,16 @@
 #!/bin/bash
 
+#Some configurable settings
+export titleColor='cyan'
+
+
 #Store shared vars here
 
 #Strings
 export DB_FILE="data/database.db"
 
 export SCAN_PORTS=" 80 443 "
+
 
 #Colors
 export RESTORE='\033[0m'
@@ -30,7 +35,9 @@ export WHITE='\033[01;37m'
 #Functions
 print_line() {
 	width=$(tput cols)
+	echo -ne $WHITE
 	printf '%*s\n' "$width" '' | tr ' ' '='
+	echo -ne $RESTORE
 }
 yes_or_no() {
         read -r -p "$* [Y/n]: " yn
