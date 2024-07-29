@@ -5,8 +5,8 @@
 PS3="Select Option: "
 while : ;do
 clear
-display_asset title.txt
-echo "𝙸𝚗𝚝𝚞𝚒𝚝𝚒𝚟𝚎 𝚊𝚗𝚍 𝚎𝚛𝚐𝚘𝚗𝚘𝚖𝚒𝚌 𝚗𝚎𝚝𝚠𝚘𝚛𝚔 𝚜𝚗𝚘𝚘𝚙𝚒𝚗g"
+$scriptPath/format/center_asset.py $scriptPath/../assets/title.txt
+$scriptPath/format/center_text.py "𝙸𝚗𝚝𝚞𝚒𝚝𝚒𝚟𝚎 𝚊𝚗𝚍 𝚎𝚛𝚐𝚘𝚗𝚘𝚖𝚒𝚌 𝚗𝚎𝚝𝚠𝚘𝚛𝚔 𝚜𝚗𝚘𝚘𝚙𝚒𝚗g"
 print_line
 echo "Select a tool to start"
 select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Build Snooper" "Search Targets" "Exit"; do
