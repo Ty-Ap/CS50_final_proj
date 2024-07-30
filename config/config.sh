@@ -49,11 +49,37 @@ yes_or_no() {
 display_asset() {
 	cat  $scriptPath/../assets/$1
 }
+print_boxes() {
+  local color_var=$1
+  shift
+  local texts=("$@")
+  local color=${!color_var}
+
+  # Print top borders
+  for text in "${texts[@]}"; do
+    local length=${#text}
+    echo -ne "${color}╔" && printf '═%.0s' $(seq 1 $length) && echo -n "╗ "
+  done
+  echo
+
+  # Print text values
+  for text in "${texts[@]}"; do
+    echo -n "║${text}║ "
+  done
+  echo
+
+  # Print bottom borders
+  for text in "${texts[@]}"; do
+    local length=${#text}
+    echo -ne "╚" && printf '═%.0s' $(seq 1 $length) && echo -ne "╝ "
+  done
+  echo -e $RESTORE
+}
 
 export -f print_line
 export -f yes_or_no
 export -f display_asset
-
+export -f print_boxes
 
 
 #Has config run?

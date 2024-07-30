@@ -20,14 +20,26 @@ fi
 ports=$SCAN_PORTS
 ip_address=$1
 open_ports=()
+declare -A port_map
+port_map[21]="ftp"
+port_map[22]="ssh"
+prot_map[23]="telnet"
+port_map[25]="smtp"
+port_map[80]="http"
+port_map[161]="snmp"
+port_map[389]="ldap"
+port_map[443]="https"
+port_map[445]="smb"
+port_map[3389]="rdp"
 
 # Program
 for port in $ports; do
   if nc -z -w 1 "$ip_address" "$port" &> /dev/null; then
-      echo "port $port is open"
-      open_ports+=("$port")
+    detailed_ports+=("Port $port | ${port_map[$port]}")
+    open_ports+=("$port")
   fi
 done
+print_boxes YELLOW "${detailed_ports[@]}"
 
 #Save data to db
 for port in ${open_ports[@]}; do
