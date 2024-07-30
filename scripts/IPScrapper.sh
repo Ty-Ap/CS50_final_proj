@@ -17,7 +17,7 @@ fi
 
 # Var definitions
 domain=$1
-ip_address=$(dig +short "$domain")
+ip_address=$(dig +short "$domain" | head -n 1) #Temp fix for domains with multiple IP addresses
 
 # Program
 if [ -z "$ip_address" ] || [ "$ip_address" == "143.244.220.150" ]; then

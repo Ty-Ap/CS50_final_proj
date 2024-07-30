@@ -39,6 +39,12 @@ for port in $ports; do
     open_ports+=("$port")
   fi
 done
+
+if [ -z ${open_ports[@]} ]; then
+  echo -e "${RED}No ports found:$RESTORE ip may be invalid, target may not be currently up, or no ports are open at the moment"
+  exit 1
+fi
+
 print_boxes YELLOW "${detailed_ports[@]}"
 
 #Save data to db
