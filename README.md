@@ -6,32 +6,24 @@ Intuitive and ergonomic network snooping.
  - [x] **IP Scraper**
         *Return IP address given domain*
 	- [x] Use `dig` to get IP address
-	- [ ] Run network IP sweep
+	- [x] Run network IP sweep
  - [ ] **Port mapper**
 		 *Return open ports of a given ip*
 	- [x] Use `nc` to scan ports
 	- [x] Remove clutter ( closed ports and useless information)
-	- [ ] Display important information concisely and aesthetically
-	- [ ] Suggest further actions based on results (redirect to *service fingerprinting* tool?)
+	- [x] Display important information concisely and aesthetically
+	- [x] Suggest further actions based on results (redirect to *service fingerprinting* tool?)
 	- [ ] Color code output
  - [ ] **Service fingerprinting**
 		 *Fingerprint a given port at a given address*
 		 
 	- [ ] **Netcat Method**
         *Use netcat to detect services*
-        - [ ] Run netcat command `nmap -sV <target_ip>` to detect services automatically
-	 
 	- [ ] **Manual method**
 	 *Manually try certain methods of fingerprinting*
-        - [ ] Get open ports (use `Port Mapper` tool)
-        - [ ] Get banners with ncat `nc`
-        - [ ] Parse banners for important data
-								- [ ] Fingerprint attempt for all protocols
-																	- [x] http
-																	- [ ] https
-																	- [ ] tcp
-																	- [ ] smtp
-																	- etc
+        - [x] Get open ports (use `Port Mapper` tool)
+        - [x] Get banners with ncat `nc`
+        - [x] Parse banners for important data
 	- [ ] Display important information concisely and aesthetically
 	- [ ] Color code output
 
