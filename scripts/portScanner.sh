@@ -33,18 +33,26 @@ port_map[445]="smb"
 port_map[3389]="rdp"
 
 # Program
+
+clear
+
 for port in $ports; do
   if nc -z -w 1 "$ip_address" "$port" &> /dev/null; then
-    detailed_ports+=("Port $port | ${port_map[$port]}")
+    detailed_ports+=(" Port $port | $GREEN${port_map[$port]} ")
     open_ports+=("$port")
   fi
 done
 
-if [ -z ${open_ports[@]} ]; then
+# No open ports found
+if [ ${#open_ports[@]} -eq 0 ]; then
   echo -e "${RED}No ports found:$RESTORE ip may be invalid, target may not be currently up, or no ports are open at the moment"
   exit 1
 fi
 
+# Ports found
+echo -e "$GREEN${#open_ports[@]} ports$RESTORE found at $ip_address:"
+
+#WARNING: targets with many ports may break this, add wrapping?
 print_boxes YELLOW "${detailed_ports[@]}"
 
 #Save data to db
@@ -53,8 +61,5 @@ for port in ${open_ports[@]}; do
 done
 # Links to external tools & scripts
 if yes_or_no "Would you like to get a service fingerprint of open ports?"; then
-  for oport in "${open_ports[@]}"; do
-     echo "fingerprinting port $oport"
-     $scriptPath/serviceFingerprinter.sh "$ip_address" "$oport"
-  done
+     $scriptPath/serviceFingerprinter.sh "$ip_address" ${open_ports[@]}
 fi

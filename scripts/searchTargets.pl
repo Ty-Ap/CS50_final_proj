@@ -40,8 +40,14 @@ else {
 	foreach my $target (@targets) {
 		if ($target =~ /$search_term/)
 		{
-			printf "$target\n";
-			$is_blank = 1;
+			# Extract the domain and IP
+my $ip = $target =~ /(\d{1-3}\.\d{1-3}\.\d{1-3}\.\d{1-3}:\d{1-5})/; #BUGGG idk perl regex syntax :(
+# Extract the ports
+my @ports = $target =~ /Port\s+(\d+):/g;
+
+# Print the results
+print "ip: $ip\n";
+print "Ports: @ports\n";
 		}
 	}
 	if ($is_blank == 0) {

@@ -57,22 +57,21 @@ print_boxes() {
 
   # Print top borders
   for text in "${texts[@]}"; do
-    local length=$( echo "$text" | sed -r 's/\\033\[[0-9;]*m//g' | wc -c )
-    #echo -n $( echo $text | sed -r 's/\\033\[[0-9;]*m//g')
-    echo -ne "${color}╔" && printf '═%.0s' $(seq 2 $length) && echo -n "╗ "
+    local length=$( echo ${#text} | sed -r 's/\\033\[[0-9;]*m//g' )
+    echo -ne "${color}╔" && printf '═%.0s' $(seq 1 $length) && echo -n "╗ "
   done
   echo
 
   # Print text values
   for text in "${texts[@]}"; do
-    echo -ne "║${text}$color║ "
+    echo -ne "║${text}║ "
   done
   echo
 
   # Print bottom borders
   for text in "${texts[@]}"; do
-    local length=$( echo "$text" | sed -r 's/\\033\[[0-9;]*m//g' | wc -c )
-    echo -ne "╚" && printf '═%.0s' $(seq 2 $length) && echo -ne "╝ "
+    local length=$( echo ${#text} | sed -r 's/\\033\[[0-9;]*m//g' )
+    echo -ne "╚" && printf '═%.0s' $(seq 1 $length) && echo -ne "╝ "
   done
   echo -e $RESTORE
 }
