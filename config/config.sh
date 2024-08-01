@@ -9,7 +9,7 @@ export titleColor='cyan'
 #Strings
 export DB_FILE="data/database.db"
 
-export SCAN_PORTS=" 80 443 "
+export SCAN_PORTS=" 80 443 22 25"
 
 
 #Colors
