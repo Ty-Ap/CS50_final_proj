@@ -12,5 +12,8 @@ if [ ! -f $DB_FILE ]; then
 fi
 sqlite3 $DB_FILE < scripts/init.sql
 
+#Modify some assets ;)
+./scripts/format/colorize.py assets/default-title.txt assets/title.txt black=█ $titleColor=╗╝═╔║╚░
+
 # Start welcome.sh
 scripts/welcome.sh

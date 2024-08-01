@@ -2,19 +2,8 @@
 
 # initialized by TY , modularized and refactored by D
 
-# Usage statement
-if [ -z "$1" ]; then
-  echo "usage $0 <ip_address>"
-  exit 1 
-fi
-
-# Config check
-if [ -z $CONFIG ]; then
-	echo "Command executed standalone: Running config"
-	export scriptPath=$(dirname $0)
-	echo "path:$scriptPath"
-	source $scriptPath/../config/config.sh
-fi
+#Init code
+source $(dirname $0)/initTool.sh "Usage $0 <ip_address>" $@
 
 # Var definitions
 ports=$SCAN_PORTS
@@ -22,12 +11,28 @@ ip_address=$1
 open_ports=()
 
 # Program
+
+clear
+
 for port in $ports; do
   if nc -z -w 1 "$ip_address" "$port" &> /dev/null; then
-      echo "port $port is open"
-      open_ports+=("$port")
+	  detailed_ports+=(" Port $port | $GREEN$( $scriptPath/getPortType.sh $port) ")
+    open_ports+=("$port")
   fi
 done
+
+# No open ports found
+if [ ${#open_ports[@]} -eq 0 ]; then
+  echo -e "${RED}No ports found:$RESTORE ip may be invalid, target may not be currently up, or no ports are open at the moment"
+  exit 1
+fi
+
+# Ports found
+echo -e "$GREEN${#open_ports[@]} ports$RESTORE found at $ip_address:"
+
+#WARNING: targets with many ports may break this, add wrapping?
+print
+$scriptPath/print_ports.py ${#open_ports[@]} $YELLOW "${detailed_ports[@]}" 
 
 #Save data to db
 for port in ${open_ports[@]}; do
@@ -35,8 +40,5 @@ for port in ${open_ports[@]}; do
 done
 # Links to external tools & scripts
 if yes_or_no "Would you like to get a service fingerprint of open ports?"; then
-  for oport in "${open_ports[@]}"; do
-     echo "fingerprinting port $oport"
-     $scriptPath/serviceFingerprinter.sh "$ip_address" "$oport"
-  done
+     $scriptPath/serviceFingerprinter.sh "$ip_address" ${open_ports[@]}
 fi

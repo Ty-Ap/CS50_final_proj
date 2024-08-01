@@ -1,0 +1,2 @@
+./print_ports.py " \033[32mPort 80 , Port 443 , Port 50 , Port 20  " "server:yoface\ntype: apache,server:bye\ntype:html,test2" \\033[31m
+

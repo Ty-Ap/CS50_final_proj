@@ -2,22 +2,12 @@
 
 # initialized by TY , modularized and refactored by D
 
-# Usage statement
-if [ -z "$1" ]; then
-	echo "Usage $0 <domain_name>"
-	exit 1
-fi
-
-# Config check
-if [ -z $CONFIG ]; then
-	echo "Command executed standalone: Running config"
-	export scriptPath=$(dirname $0)
-	source $scriptPath/../config/config.sh
-fi
+#Init code
+source $(dirname $0)/initTool.sh "Usage $0 <domain_name>" $@ 
 
 # Var definitions
 domain=$1
-ip_address=$(dig +short "$domain")
+ip_address=$(dig +short "$domain" | head -n 1) #Temp fix for domains with multiple IP addresses
 
 # Program
 if [ -z "$ip_address" ] || [ "$ip_address" == "143.244.220.150" ]; then

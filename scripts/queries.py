@@ -26,9 +26,9 @@ def display_data():
     for ip in data:
         cursor.execute("SELECT * FROM targets WHERE ip=?;",ip);
         target = cursor.fetchone()
-        print(f"{target[1]} ({target[0]})")
+        print(f"\033[1;36m{target[1]} \033[0;33m({target[0]})")
         for port in cursor.execute("SELECT * FROM ports WHERE ip=?;",ip):
-            print(f"Port {port[1]}: {port[2]}")
+            print(f"\033[0;32mPort {port[1]}:\033[0;m {port[2]}")
         print()  
     
 
@@ -68,6 +68,7 @@ def insert_target(ip, domain):
 def insert_port(ip, port, service):
     cursor.execute("INSERT INTO ports (ip,port,service) VALUES (?,?,?);", (ip,port,service))
     connection.commit()
+
 if method == "put":
     if tool == "ip":
         ip = data[0]

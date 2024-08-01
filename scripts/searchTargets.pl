@@ -5,6 +5,8 @@ use warnings;
 
 # Created by D
 
+#Init code (can't use one-liner because not in bash)
+
 # Usage statement
 if (@ARGV == 0) {
     print "Usage: $0 <search>\n";
@@ -31,7 +33,7 @@ my $search_term = $ARGV[0];
 my $all_data = `$scriptPath/queries.py get all`;
 
 if ($search_term eq "") {
-	print "$all_data\n";
+	printf "$all_data\n";
 }
 else {
 
@@ -40,11 +42,22 @@ else {
 	foreach my $target (@targets) {
 		if ($target =~ /$search_term/)
 		{
+			# Extract the domain and IP
+			my @head = $target =~ /^.*\n/g;
+			# Extract the ports
+			my @ports = $target =~ /Port\s+(\d+):/g;
 			print "$target\n";
-			$is_blank = 1;
+			# Print the results
+			#print "head: @head\n";
+			#my $numPorts = scalar @targets;
+			#my $command = "$scriptPath/print_ports.py $numPorts \033[33m @ports";
+			#my $output = qx($command);
+			#print $output;
+
 		}
+		$is_blank = 1
 	}
 	if ($is_blank == 0) {
-		print "No targets matched $search_term\n"
+		printf "\033[0;31mNo targets matched\033[0;37m '$search_term'\n"
 	}
 }
