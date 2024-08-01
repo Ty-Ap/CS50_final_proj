@@ -7,25 +7,26 @@ Intuitive and ergonomic network snooping.
         *Return IP address given domain*
 	- [x] Use `dig` to get IP address
 	- [x] Run network IP sweep
- - [ ] **Port mapper**
+ - [x] **Port mapper**
 		 *Return open ports of a given ip*
 	- [x] Use `nc` to scan ports
 	- [x] Remove clutter ( closed ports and useless information)
 	- [x] Display important information concisely and aesthetically
 	- [x] Suggest further actions based on results (redirect to *service fingerprinting* tool?)
-	- [ ] Color code output
- - [ ] **Service fingerprinting**
+	- [x] Color code output
+ - [x] **Service fingerprinting**
 		 *Fingerprint a given port at a given address*
-		 
-	- [ ] **Netcat Method**
-        *Use netcat to detect services*
-	- [ ] **Manual method**
-	 *Manually try certain methods of fingerprinting*
         - [x] Get open ports (use `Port Mapper` tool)
         - [x] Get banners with ncat `nc`
         - [x] Parse banners for important data
-	- [ ] Display important information concisely and aesthetically
-	- [ ] Color code output
+	- [x] Display important information concisely and aesthetically
+	- [x] Color code output
+ - [x] **SQL Integration**
+ 	- [x] Save data from tools into database
+  	- [x] Search function for saved data
+ - [x] **Build fingerprinting**
+	- [x] Get data from target
+ 	- [x] Interpret build based on data 
 
 ## Flow Chart
 ```mermaid
