@@ -2,35 +2,13 @@
 
 # initialized by TY , modularized and refactored by D
 
-# Usage statement
-if [ -z "$1" ]; then
-  echo "usage $0 <ip_address>"
-  exit 1 
-fi
-
-# Config check
-if [ -z $CONFIG ]; then
-	echo "Command executed standalone: Running config"
-	export scriptPath=$(dirname $0)
-	echo "path:$scriptPath"
-	source $scriptPath/../config/config.sh
-fi
+#Init code
+source $(dirname $0)/initTool.sh "Usage $0 <ip_address>" $@
 
 # Var definitions
 ports=$SCAN_PORTS
 ip_address=$1
 open_ports=()
-declare -A port_map
-port_map[21]="ftp"
-port_map[22]="ssh"
-prot_map[23]="telnet"
-port_map[25]="smtp"
-port_map[80]="http"
-port_map[161]="snmp"
-port_map[389]="ldap"
-port_map[443]="https"
-port_map[445]="smb"
-port_map[3389]="rdp"
 
 # Program
 
@@ -38,7 +16,7 @@ clear
 
 for port in $ports; do
   if nc -z -w 1 "$ip_address" "$port" &> /dev/null; then
-    detailed_ports+=(" Port $port | $GREEN${port_map[$port]} ")
+	  detailed_ports+=(" Port $port | $GREEN$( $scriptPath/getPortType.sh $port) ")
     open_ports+=("$port")
   fi
 done
@@ -53,7 +31,8 @@ fi
 echo -e "$GREEN${#open_ports[@]} ports$RESTORE found at $ip_address:"
 
 #WARNING: targets with many ports may break this, add wrapping?
-print_boxes YELLOW "${detailed_ports[@]}"
+print
+$scriptPath/print_ports.py ${#open_ports[@]} $YELLOW "${detailed_ports[@]}" 
 
 #Save data to db
 for port in ${open_ports[@]}; do

@@ -56,7 +56,7 @@ select option in "IP Scrapper" "Port Mapper" "Service Fingerprinter" "Build Snoo
 		elif [ "$tool" != "null" ]; then
 			echo "Error: Cannot find tool at $tool."
 	fi
-	echo -e "Press$RED ENTER$RESTORE to continue"
+	echo -e "${RESTORE}Press$RED ENTER$RESTORE to continue"
 	read
 	break
 done

@@ -68,6 +68,7 @@ def insert_target(ip, domain):
 def insert_port(ip, port, service):
     cursor.execute("INSERT INTO ports (ip,port,service) VALUES (?,?,?);", (ip,port,service))
     connection.commit()
+
 if method == "put":
     if tool == "ip":
         ip = data[0]
