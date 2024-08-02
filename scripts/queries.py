@@ -13,9 +13,9 @@ method = sys.argv[1]
 tool = sys.argv[2]
 data = sys.argv[3:]
 
-scriptPath = os.environ['scriptPath']
+BASE_PATH = os.environ['BASE_PATH']
 
-connection = sqlite3.connect(f"{scriptPath}/../{DB_FILE}")
+connection = sqlite3.connect(f"{BASE_PATH}/{DB_FILE}")
 cursor = connection.cursor()
 
 #connection.set_trace_callback(print)

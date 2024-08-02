@@ -7,9 +7,12 @@ export titleColor='cyan'
 #Store shared vars here
 
 #Strings
+if [ -z $BASE_PATH ]; then
+	export BASE_PATH=$(dirname $0)
+fi
 export DB_FILE="data/database.db"
 
-export SCAN_PORTS=" 80 443 "
+export SCAN_PORTS=" 80 443 22 25"
 
 
 #Colors
@@ -47,12 +50,20 @@ yes_or_no() {
         esac
 }
 display_asset() {
-	cat  $scriptPath/../assets/$1
+	cat  $BASE_PATH/assets/$1
+}
+link_tool() {
+
+	if yes_or_no "$2"; then
+
+		$BASE_PATH/tools/$1.tool ${@:3}
+	fi
 }
 
 export -f print_line
 export -f yes_or_no
 export -f display_asset
+export -f link_tool
 
 
 #Has config run?
