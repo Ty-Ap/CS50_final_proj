@@ -3,7 +3,7 @@
 # initialized by TY , modularized and refactored by D
 
 #Init code
-source $(dirname $0)/initTool.sh "Usage $0 <domain_name>" $@ 
+source $(dirname $0)/../scripts/initTool.sh "Usage $0 <domain_name>" $@ 
 
 # Var definitions
 domain=$1
@@ -17,15 +17,13 @@ else
 	clear
 	echo "IP address for $domain follows"
 	print_line
-	cat $scriptPath/../assets/shovel.txt
+	cat $BASE_PATH/assets/shovel.txt
 	echo "$ip_address"
 	print_line
 fi
 
 # Save data to db
-$scriptPath/queries.py put ip $ip_address $domain
+$BASE_PATH/scripts/queries.py put ip $ip_address $domain
 
 # Links to external tools & scripts
-if yes_or_no "Would you like to map this IP's ports?"; then
-	$scriptPath/portScanner.sh "$ip_address"
-fi
+link_tool portScanner "Would you like to map this IP's ports?" "$ip_address"

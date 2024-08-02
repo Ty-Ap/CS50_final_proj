@@ -3,7 +3,8 @@
 # initialized by TY , modularized and refactored by D
 
 #Init code
-source $(dirname $0)/initTool.sh "Usage $0 <ip_address>" $@
+#
+source $(dirname $0)/../scripts/initTool.sh "Usage $0 <ip_address>" $@
 
 # Var definitions
 ports=$SCAN_PORTS
@@ -16,7 +17,7 @@ clear
 
 for port in $ports; do
   if nc -z -w 1 "$ip_address" "$port" &> /dev/null; then
-	  detailed_ports+=(" Port $port | $GREEN$( $scriptPath/getPortType.sh $port) ")
+	  detailed_ports+=(" Port $port | $GREEN$( $BASE_PATH/scripts/getPortType.sh $port) ")
     open_ports+=("$port")
   fi
 done
@@ -28,17 +29,13 @@ if [ ${#open_ports[@]} -eq 0 ]; then
 fi
 
 # Ports found
-echo -e "$GREEN${#open_ports[@]} ports$RESTORE found at $ip_address:"
+echo -e "$GREEN${#open_ports[@]} ports$RESTORE found at $ip_address:\n"
 
-#WARNING: targets with many ports may break this, add wrapping?
-print
-$scriptPath/print_ports.py ${#open_ports[@]} $YELLOW "${detailed_ports[@]}" 
+$BASE_PATH/scripts/print_ports.py ${#open_ports[@]} $YELLOW "${detailed_ports[@]}" 
 
 #Save data to db
 for port in ${open_ports[@]}; do
-	$scriptPath/queries.py put map $ip_address $port
+	$BASE_PATH/scripts/queries.py put map $ip_address $port
 done
 # Links to external tools & scripts
-if yes_or_no "Would you like to get a service fingerprint of open ports?"; then
-     $scriptPath/serviceFingerprinter.sh "$ip_address" ${open_ports[@]}
-fi
+link_tool serviceFingerprinter "Would you like to get a service fingerprint of open ports?" "$ip_address" "${open_ports[@]}"

@@ -3,7 +3,7 @@
 # initialized by TY , modularized and refactored by D
 
 #Init code
-source $(dirname $0)/initTool.sh "Usage $0 <ip_address> <port>>" $@ 
+source $(dirname $0)/../scripts/initTool.sh "Usage $0 <ip_address> <port>>" $@ 
 
 # Var defintions
 ip_address=$1
@@ -20,15 +20,15 @@ for port in ${ports[@]}; do
 	contentType=$(echo "$banner" | grep -E "Content-Type:" | tr " " "_")
 	connection=$(echo "$banner" | grep -E "Connection:" | tr " " "_")
 	http=$(echo "$banner" | grep -E "HTTP/" | tr " " "_")
-	port_list+=(" Port $port | $GREEN$($scriptPath/getPortType.sh $port) ")
+	port_list+=(" Port $port | $GREEN$($BASE_PATH/scripts/getPortType.sh $port) ")
 	data_list+=("$(echo "$server,$contentType,$connection" | tr -d "\r")")
 done
 
 echo "Done"
-$scriptPath/print_ports.py 2 $YELLOW "${port_list[@]}" "${data_list[@]}"
+$BASE_PATH/scripts/print_ports.py 2 $YELLOW "${port_list[@]}" "${data_list[@]}"
 #Save data to db
 for i in "${!save_ports[@]}"; do
-	$scriptPath/queries.py put service $ip_address ${save_ports[$i]} "$( echo ${data_list[$i]} | tr '_' ' ')"
+	$BASE_PATH/scripts/queries.py put service $ip_address ${save_ports[$i]} "$( echo ${data_list[$i]} | tr '_' ' ')"
 done
 
 # Links to external tools & scripts

@@ -3,9 +3,6 @@
 # Run config.sh
 source config/config.sh
 
-# Save relative path
-export scriptPath="scripts"
-
 # Initiate database
 if [ ! -f $DB_FILE ]; then
 	sqlite3 $DB_FILE ''
