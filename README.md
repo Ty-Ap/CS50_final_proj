@@ -164,3 +164,18 @@ flowchart TD
             stdout --> redo{Use another tool?}
             redo --> endchart(End) & restart(Goto select tool)
 ```
+## Welcome.sh
+``` mermaid
+flowchart TD
+    subgraph welcome.sh
+    title(Print title & subtitle) --> getTools[/Get tools in /tools with extension .tool/]
+    getTools --> select(Prompt a user selection for tool)
+    select --> getUsage(Run tool with no arguments)
+    getUsage --> parseArgs(Parse usage for arguments)
+    parseArgs --> args[/Arguments/]
+    args --> getInput(Get user input)
+    getInput --> args
+    getInput --> run(Run tool with input)
+    run --> select
+    end
+```
