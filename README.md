@@ -16,7 +16,7 @@ Intuitive and ergonomic network snooping.
 	- [x] Color code output
  - [x] **Service fingerprinting**
 		 *Fingerprint a given port at a given address*
-        - [x] Get open ports (use `Port Mapper` tool)
+	- [x] Get open ports (use `Port Mapper` tool)
         - [x] Get banners with ncat `nc`
         - [x] Parse banners for important data
 	- [x] Display important information concisely and aesthetically
