@@ -164,7 +164,7 @@ flowchart TD
             stdout --> redo{Use another tool?}
             redo --> endchart(End) & restart(Goto select tool)
 ```
-## Welcome.sh
+## welcome.sh
 ``` mermaid
 flowchart TD
     subgraph welcome.sh
@@ -177,5 +177,16 @@ flowchart TD
     getInput --> args
     getInput --> run(Run tool with input)
     run --> select
+    end
+```
+
+## run.sh
+``` mermaid
+flowchart TD
+    subgraph run.sh
+    direction LR
+    setup[Run setup scripts] --> config(config/config.sh) & queries(scripts/queries.py --setup)
+    run[Start main program] --> start(scripts/welcome.sh)
+
     end
 ```
