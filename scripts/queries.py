@@ -66,14 +66,14 @@ def upsert_port(conn, ip, port, server=None, content_type=None, connection=None)
     conn.commit()
 
 def get_all_data(conn):
-    data = []
+    data = {}
     cur = conn.cursor()
 
     for row in cur.execute("SELECT * FROM targets"):
         ip = row[0]
         data[ip] = {
-            "domain":row[2],
-            "build":row[3],
+            "domain":row[1],
+            "build":row[2],
             "ports":{}
         }
     for row in cur.execute("SELECT * FROM ports"):
@@ -93,7 +93,7 @@ def get_all_data(conn):
 def main():
     parser = argparse.ArgumentParser(description='Insert, update, or get saved  data')
 
-    parser.add_argument('--ip', required=True, help='IP address')
+    parser.add_argument('--ip', help='IP address')
     parser.add_argument('--domain', help='IP address')
     parser.add_argument('--build', help='Build information')
     parser.add_argument('--port', help='Open port number')

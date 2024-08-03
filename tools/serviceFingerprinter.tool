@@ -48,7 +48,6 @@ for port in ${ports[@]}; do
 done
 
 echo "Done"
-echo "${data_list[@]}"
 $BASE_PATH/scripts/print_ports.py 2 $YELLOW "${port_list[@]}" "${data_list[@]}"
 
 # Links to external tools & scripts

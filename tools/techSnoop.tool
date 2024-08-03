@@ -1,14 +1,12 @@
 #!/bin/bash
 
+#Made by ty
+
+source $(dirname $0)/../scripts/initTool.sh "Usage $0 <domain>" $@ 
 
 
-if [ -z "$1" ]; then
-    echo "Usage $0 <domain>"
-    exit 1
-fi
+out=$(node $BASE_PATH/tools/techSnoop.js "$@")
+echo $out
 
-domain=$1
+$BASE_PATH/scripts/queries.py --ip "$(dig +short "$1" | head -n 1)" --domain "$1" --build "$out"
 
-node scripts/techSnoop.js "$@"
-
-# Ty 

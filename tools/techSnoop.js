@@ -21,6 +21,7 @@ async function scanDomain(url) {
     if (wordpressRegex.test(html)) {
       console.log(`${url} is powered by WordPress`);
       detectedWordpress = true;
+	
     }
 
     else if (jqueryRegex.test(html)) {

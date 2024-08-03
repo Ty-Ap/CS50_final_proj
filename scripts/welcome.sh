@@ -31,7 +31,7 @@ while : ;do
 			echo "Thank you for using DigIt ^_^"
 			exit 0
 		elif [ "$option" =  "SearchTargets" ]; then
-			tool="$BASE_PATH/scripts/searchTargets.pl"
+			$BASE_PATH/scripts/searchTargets.pl
 
 		elif [ -f "$BASE_PATH/tools/$option.tool" ]; then
 			tool="$BASE_PATH/tools/$option.tool"
