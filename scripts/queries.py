@@ -1,112 +1,122 @@
 #!/bin/python3
 
-import sqlite3, os, sys, json
+import sqlite3, argparse, os, json
 
-# Config check
-if  os.getenv('CONFIG') == None:
-    print("This script cannot be run standalone, enviroment variables need to be set via config.sh")
-    sys.exit(1)
+def create_tables(conn):
+    targets_table = """
+    CREATE TABLE IF NOT EXISTS targets (
+        ip TEXT PRIMARY KEY,
+        domain TEXT,
+        build TEXT
+    );
+    """
 
-#Var definitions
-DB_FILE = os.environ['DB_FILE']
-method = sys.argv[1]
-tool = sys.argv[2]
-data = sys.argv[3:]
+    ports_table = """
+    CREATE TABLE IF NOT EXISTS ports (
+        ip TEXT,
+        port INTEGER NOT NULL,
+        server TEXT,
+        content_type TEXT,
+        connection TEXT,
+        PRIMARY KEY (ip, port),
+        FOREIGN KEY (ip) REFERENCES targets (ip)
+        );
+    """
+    try:
+        c = conn.cursor()
+        c.execute(targets_table)
+        c.execute(ports_table)
+    except sqlite3.Error as e:
+        print(e)
 
-BASE_PATH = os.environ['BASE_PATH']
 
-connection = sqlite3.connect(f"{BASE_PATH}/{DB_FILE}")
-cursor = connection.cursor()
+def create_connection(db_file):
+    conn = None
+    try:
+        conn = sqlite3.connect(db_file)
+    except sqlite3.Error as e:
+        print(e)
+    return conn
 
-#connection.set_trace_callback(print)
+def upsert_target(conn, ip, domain=None, build=None):
+    query = '''
+    INSERT INTO targets (ip, domain, build) 
+    VALUES (?,?,?)
+    ON CONFLICT (ip) DO
+    UPDATE SET 
+    domain=COALESCE(excluded.domain, domain),
+    build=COALESCE(excluded.build, build)
+    '''
+    cur = conn.cursor()
+    cur.execute(query, (ip, domain, build))
+    conn.commit()
 
-def display_data():
-    cursor.execute("SELECT ip FROM targets;")
-    data = cursor.fetchall()
-    for ip in data:
-        cursor.execute("SELECT * FROM targets WHERE ip=?;",ip);
-        target = cursor.fetchone()
-        print(f"\033[1;36m{target[1]} \033[0;33m({target[0]})")
-        for port in cursor.execute("SELECT * FROM ports WHERE ip=?;",ip):
-            print(f"\033[0;32mPort {port[1]}:\033[0;m {port[2]}")
-        print()  
-    
+def upsert_port(conn, ip, port, server=None, content_type=None, connection=None):
+    query = '''
+    INSERT INTO ports (ip, port, server, content_type, connection) 
+    VALUES (?,?,?,?,?)
+    ON CONFLICT (ip, port) DO
+    UPDATE SET 
+    server=COALESCE(excluded.server, server),
+    content_type=COALESCE(excluded.content_type, content_type),
+    connection=COALESCE(excluded.connection, connection)
+    '''
+    cur = conn.cursor()
+    cur.execute(query, (ip, port, server, content_type, connection))
+    conn.commit()
 
-def field_exists(col,val):
-    cursor.execute(f"SELECT * FROM targets WHERE {col}=?;", (val,))
-    if cursor.fetchone():
-        return True
-    else:
-        return False
+def get_all_data(conn):
+    data = {}
+    cur = conn.cursor()
 
-def port_exists(ip,port):
-    cursor.execute("SELECT * FROM ports WHERE ip=? AND port=?;",(ip,port))
-    if cursor.fetchone():
-        return True
-    else:
-        return False
+    for row in cur.execute("SELECT * FROM targets"):
+        ip = row[0]
+        data[ip] = {
+            "domain":row[1],
+            "build":row[2],
+            "ports":{}
+        }
+    for row in cur.execute("SELECT * FROM ports"):
+        ip = row[0]
+        port = row[1]
+        if ip in data:
+            data[ip]["ports"][port] = {
+                    "server":row[2],
+                    "content_type":row[3],
+                    "connection":row[4]
+            }
 
-def domain_null(ip):
-    cursor.execute("SELECT domain FROM targets WHERE ip=?;",(ip,))
-    if cursor.fetchone():
-        return False
-    else:
-        return True
+    return json.dumps(data, indent=4)
 
-def update_target(ip,domain):
-    cursor.execute("UPDATE targets SET domain=? WHERE ip=?;",(domain,ip))
-    connection.commit()
 
-def update_port(ip,port,service):
-    cursor.execute("UPDATE ports SET service=? WHERE ip=? AND port=?;",(service,ip,port))
-    connection.commit()
 
-def insert_target(ip, domain):
-    cursor.execute("INSERT INTO targets (ip,domain) VALUES (?,?);", (ip,domain))
-    connection.commit()
+def main():
+    parser = argparse.ArgumentParser(description='Insert, update, or get saved  data')
 
-def insert_port(ip, port, service):
-    cursor.execute("INSERT INTO ports (ip,port,service) VALUES (?,?,?);", (ip,port,service))
-    connection.commit()
+    parser.add_argument('--ip', help='IP address')
+    parser.add_argument('--domain', help='IP address')
+    parser.add_argument('--build', help='Build information')
+    parser.add_argument('--port', help='Open port number')
+    parser.add_argument('--server', help='Server name')
+    parser.add_argument('--content_type', help='Content Type')
+    parser.add_argument('--connection', help='Connection Type')
+    parser.add_argument('--get_all', action='store_true', help='Get all data')
 
-if method == "put":
-    if tool == "ip":
-        ip = data[0]
-        domain = data[1]
-        if field_exists("ip",ip) and domain_null(ip):
-            update_target(ip,domain)
-        elif not field_exists("ip",ip):
-            insert_target(ip,domain)
+    args = parser.parse_args()
 
-    elif tool == "map":
-        ip = data[0]
-        port = data[1]
-
-        if not field_exists("ip",ip):
-            insert_target(ip,None)
-        if not port_exists(ip,port):
-            insert_port(ip,port,None)
-
-    elif tool == "service":
-        ip = data[0]
-        port = data[1]
-        service = data[2]
-        if not field_exists("ip",ip):
-            insert_target(ip,None)
-        if port_exists(ip,port):
-            update_port(ip,port,service)
+    database = os.environ['DB_FILE']
+    conn = create_connection(database)
+    if conn is not None:
+        create_tables(conn)
+        if args.get_all:
+            print(get_all_data(conn))
         else:
-            insert_port(ip,port,service)
+            if args.ip:
+                upsert_target(conn, args.ip, args.domain, args.build)
+                if args.port:
+                    upsert_port(conn, args.ip, int(args.port), args.server, args.content_type, args.connection)
 
     else:
-        print(f"Error: {tool} not found. Must be 'ip', 'map', or 'service'")
-elif method == "get":
-    if tool == "all":
-        display_data()
-        
+        print("Error: Cannot create database connection.")
 
-else:
-    print(f"Error: Method {method} not supported")
-
-
-connection.close()
+main()

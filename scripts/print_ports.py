@@ -1,7 +1,11 @@
 #!/bin/python3
 
-import sys, os, re
+import sys, os, re, argparse
 
+parser = argparse.ArgumentParser(description='Print out gin ports side by side with information underneath')
+
+parser.add_argument('--ports', required=True, help='Array of ports/port titles')
+parser.add_argument('-data', required=True, help='Array of data')
 #Usage statement
 if len(sys.argv) == 1:
     print(f"Usage [ports] [data]" )
@@ -43,9 +47,9 @@ if len(data) > 0:
         for p,x in zip(lines,range(len(lines))): #iterate horizontally
             if i < len(p): #Check line exists
                     if x == 0:
-                        line_parts.append(" "*padding+p[i].replace("_"," "))
+                        line_parts.append(" "*padding+p[i])
                     else:
-                        line_parts.append(" "*(padding-(len(p[i])-(len(remove_ansi(ports[x]))+1)))+p[i].replace("_"," "))
+                        line_parts.append(" "*(padding-(len(p[i])-(len(remove_ansi(ports[x]))+1)))+p[i])
     
         print(''.join(line_parts))
 

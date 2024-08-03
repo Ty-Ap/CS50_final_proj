@@ -23,7 +23,7 @@ else
 fi
 
 # Save data to db
-$BASE_PATH/scripts/queries.py put ip $ip_address $domain
+$BASE_PATH/scripts/queries.py --ip $ip_address --domain $domain
 
 # Links to external tools & scripts
 link_tool portScanner "Would you like to map this IP's ports?" "$ip_address"
