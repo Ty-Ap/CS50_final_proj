@@ -35,7 +35,7 @@ $BASE_PATH/scripts/print_ports.py ${#open_ports[@]} $YELLOW "${detailed_ports[@]
 
 #Save data to db
 for port in ${open_ports[@]}; do
-	$BASE_PATH/scripts/queries.py put map $ip_address $port
+	$BASE_PATH/scripts/queries.py --ip  $ip_address --port $port
 done
 # Links to external tools & scripts
 link_tool serviceFingerprinter "Would you like to get a service fingerprint of open ports?" "$ip_address" "${open_ports[@]}"

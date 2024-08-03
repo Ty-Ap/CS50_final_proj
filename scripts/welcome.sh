@@ -31,10 +31,10 @@ while : ;do
 			echo "Thank you for using DigIt ^_^"
 			exit 0
 		elif [ "$option" =  "SearchTargets" ]; then
-			tool="scripts/searchTargets.pl"
+			tool="$BASE_PATH/scripts/searchTargets.pl"
 
-		elif [ -f "tools/$option.tool" ]; then
-			tool="tools/$option.tool"
+		elif [ -f "$BASE_PATH/tools/$option.tool" ]; then
+			tool="$BASE_PATH/tools/$option.tool"
 		else
 			echo "Invalid option $option"
 			break
