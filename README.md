@@ -1,5 +1,7 @@
-# CS50 Final Project
-Intuitive and ergonomic network snooping.
+
+Intuitive and ergonomic network snooping
+
+# DigIt
 
 ### Checklist
 
