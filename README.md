@@ -1,7 +1,5 @@
-
-Intuitive and ergonomic network snooping
-
 # DigIt
+Intuitive and ergonomic network snooping
 
 ### Checklist
 
